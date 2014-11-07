@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import static play.libs.Json.toJson;
 
 public class Application extends Controller {
+    private static Random rand = new Random();
 
     public static Result index() {
         return ok("alkobot at your service. drunks will be drunks.");
@@ -56,7 +57,7 @@ public class Application extends Controller {
             try {
                 String funnies = Play.application().configuration().getString("funnies");
                 List<String> lines = Files.readLines(new File(funnies), Charset.forName("utf-8"));
-                String joke = lines.get(new Random().nextInt(lines.size()));
+                String joke = lines.get(rand.nextInt(lines.size()));
                 return F.Promise.pure(ok(toJson(new SlackResponse(joke))));
             } catch (IOException e) {
                 Logger.error("Could not find funnies {}", e.getMessage());
