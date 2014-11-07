@@ -1,15 +1,21 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.io.Files;
 import play.Logger;
+import play.Play;
 import play.data.Form;
 import play.libs.F;
 import play.libs.ws.WS;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static play.libs.Json.toJson;
@@ -46,6 +52,15 @@ public class Application extends Controller {
 
                         return ok(toJson(new SlackResponse(slackResponse)));
             }).recover(t -> ok(toJson(new SlackResponse("my sources are drunk."))));
+        } else if (question.startsWith("nojsa lite")) {
+            try {
+                String funnies = Play.application().configuration().getString("funnies");
+                List<String> lines = Files.readLines(new File(funnies), Charset.forName("utf-8"));
+                String joke = lines.get(new Random().nextInt(lines.size()));
+                return F.Promise.pure(ok(toJson(new SlackResponse(joke))));
+            } catch (IOException e) {
+                return F.Promise.pure(ok(toJson(new SlackResponse("orkar inte."))));
+            }
         } else {
             return F.Promise.pure(ok(toJson(new SlackResponse("waat?"))));
         }
