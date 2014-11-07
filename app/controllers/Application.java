@@ -59,6 +59,7 @@ public class Application extends Controller {
                 String joke = lines.get(new Random().nextInt(lines.size()));
                 return F.Promise.pure(ok(toJson(new SlackResponse(joke))));
             } catch (IOException e) {
+                Logger.error("Could not find funnies {}", e.getMessage());
                 return F.Promise.pure(ok(toJson(new SlackResponse("orkar inte."))));
             }
         } else {
