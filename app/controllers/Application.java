@@ -40,7 +40,7 @@ public class Application extends Controller {
         SlackRequest sr = req.bindFromRequest().get();
 
         String question = sr.text.toLowerCase().substring(8).trim();
-        Logger.info("question: {}", question);
+        Logger.info("question:[{}] {}", sr.channel_name, question);
         if (question.startsWith("find ")) {
             // http://www.alko.fi/api/find/products?Language=sv&Page=0&PageSize=20&ProductIds=&Query=lapin+kulta*&SingleGrape=false&Sort=0
             return WS.url("http://www.alko.fi/api/find/products")
