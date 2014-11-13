@@ -32,6 +32,7 @@ public class Application extends Controller {
         urls.add("http://http://akka.io");
         urls.add("https://www.haskell.org/haskellwiki/Haskell");
 
+        response().setHeader(VARY, "Accept-Encoding");
         return ok(index.render(urls.get(rand.nextInt(urls.size()))));
     }
 
