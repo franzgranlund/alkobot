@@ -63,7 +63,7 @@ public class Application extends Controller {
             }).recover(t -> ok(toJson(new SlackResponse("my sources are drunk."))));
         } else if (question.startsWith("nojsa lite")) {
             try {
-                String funnies = Play.application().configuration().getString("funnies");
+                String funnies = (Play.isDev()) ? Play.application().configuration().getString("dev.funnies") : Play.application().configuration().getString("prod.funnies");
                 List<String> lines = Files.readLines(new File(funnies), Charset.forName("utf-8"));
                 String joke = lines.get(rand.nextInt(lines.size()));
                 return F.Promise.pure(ok(toJson(new SlackResponse(joke))));
