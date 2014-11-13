@@ -15,7 +15,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "3.2.0"
 )
 
-pipelineStages := Seq(uglify, digest)
+pipelineStages := Seq(uglify, digest, gzip)
 
 doc in Compile <<= target.map(_ / "none")
 
