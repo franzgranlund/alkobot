@@ -1,1 +1,1 @@
--Dpidfile.path=/var/run/${{app_name}}/play.pid -Dhttp.port=80 -Dlogger.file=${{chdir}}/conf/alkobot.xml -Dconfig.file=${{chdir}}/conf/application.conf
+-Dpidfile.path=/var/run/${{app_name}}/play.pid -Dhttp.port=6565 -Dlogger.file=${{chdir}}/conf/alkobot.xml -Dconfig.file=${{chdir}}/conf/application.conf
