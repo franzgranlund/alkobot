@@ -9,6 +9,7 @@ import play.libs.F;
 import play.libs.ws.WS;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.index;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +25,14 @@ public class Application extends Controller {
     private static Random rand = new Random();
 
     public static Result index() {
-        return ok("alkobot at your service. drunks will be drunks.");
+        Logger.info("[{}] GET /", request().remoteAddress());
+        List<String> urls = new ArrayList<>();
+        urls.add("http://www.playframework.com");
+        urls.add("http://www.scala-lang.org");
+        urls.add("http://http://akka.io");
+        urls.add("https://www.haskell.org/haskellwiki/Haskell");
+
+        return ok(index.render(urls.get(rand.nextInt(urls.size()))));
     }
 
     public static F.Promise<Result> slackRequest() {

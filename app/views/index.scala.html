@@ -1,0 +1,70 @@
+@(link: String)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>.</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <link rel="stylesheet" media="screen" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.min.css"))">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
+        <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.min.js"))'></script>
+    </head>
+    <body>
+        <div class="site-wrapper">
+            <div class="site-wrapper-inner">
+                <div class="cover-container">
+
+                    <div class="masthead clearfix">
+                        <div class="inner">
+                            <h3 class="masthead-brand">Franz Granlund</h3>
+                            <nav>
+                                <ul class="nav masthead-nav">
+                                    <li><a href="https://www.github.com/franzgranlund"><img src="@routes.Assets.at("images/github.png")" /></a></li>
+                                    <li><a href="https://www.twitter.com/franzgranlund"><img src="@routes.Assets.at("images/twitter.png")" /></a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <div class="inner cover">
+                        <img src="@routes.Assets.at("images/franz.jpg")" alt="Batman" class="img-circle">
+                        <h1 class="cover-heading">I like software development.</h1>
+                        <p class="lead">I'm more of a backend guy. Distributed computing and functional programming is hard. Oh, and the devil is always in the details.</p>
+
+                        <p><a href="http://franzgranlund.wordpress.com/2014/11/08/yet-another-java-8-optional-post/">
+                            <em>Yet another Java 8 Optional post</em>
+                        </a></p>
+
+                        <p><a href="http://franzgranlund.wordpress.com/2012/03/29/play-framework-2-0-javascriptrouter-in-java/">
+                            <em>Play Framework 2.0 – javascriptRouter in Java</em>
+                        </a></p>
+
+                        <p><a href="http://feadro.com/simple-ip-access-list-for-play-2-1-with-java/">
+                            <em>Simple IP Access List for Play 2 with Java</em>
+                        </a></p>
+
+                        <p><a href="http://feadro.com/content-security-policy-in-play-framework-2/">
+                            <em>Content Security Policy in Play! Framework 2</em>
+                        </a></p>
+
+
+                        <p><a href="http://feadro.com/play-framework-2-0-datatables-server-side-processing/">
+                            <em>Play Framework 2.0 + DataTables + Server-side processing</em>
+                        </a></p>
+                    </div>
+
+                    <div class="mastfoot">
+                        <div class="inner">
+                            <p>Cover template is without shame ripped from <a href="http://getbootstrap.com">Bootstrap</a>. Also, visit <a href="@link">this site.</a></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

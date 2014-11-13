@@ -10,7 +10,9 @@ lazy val root = (project in file(".")).enablePlugins(PlayJava)
 scalaVersion := "2.11.4"
 
 libraryDependencies ++= Seq(
-  javaWs
+  javaWs,
+  "org.webjars" %% "webjars-play" % "2.3.0-1",
+  "org.webjars" % "bootstrap" % "3.2.0"
 )
 
 doc in Compile <<= target.map(_ / "none")
