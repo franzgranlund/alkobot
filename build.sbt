@@ -15,6 +15,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "3.2.0"
 )
 
+pipelineStages := Seq(uglify, digest)
+
 doc in Compile <<= target.map(_ / "none")
 
 maintainer in Linux := "Alkobot <alkobot@example.com>"
