@@ -7,11 +7,11 @@
         <meta charset="utf-8">
         <title>.</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <link rel="stylesheet" media="screen" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.min.css"))">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("lib/bootstrap/css/bootstrap.min.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
-        <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
-        <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.min.js"))'></script>
+        <script type='text/javascript' src='@routes.Assets.versioned("lib/jquery/jquery.min.js")'></script>
+        <script type='text/javascript' src='@routes.Assets.versioned("lib/bootstrap/js/bootstrap.min.js")'></script>
     </head>
     <body>
         <div class="site-wrapper">
@@ -23,15 +23,15 @@
                             <h3 class="masthead-brand">Franz Granlund</h3>
                             <nav>
                                 <ul class="nav masthead-nav">
-                                    <li><a href="https://www.github.com/franzgranlund"><img src="@routes.Assets.at("images/github.png")" /></a></li>
-                                    <li><a href="https://www.twitter.com/franzgranlund"><img src="@routes.Assets.at("images/twitter.png")" /></a></li>
+                                    <li><a href="https://www.github.com/franzgranlund"><img src="@routes.Assets.versioned("images/github.png")" /></a></li>
+                                    <li><a href="https://www.twitter.com/franzgranlund"><img src="@routes.Assets.versioned("images/twitter.png")" /></a></li>
                                 </ul>
                             </nav>
                         </div>
                     </div>
 
                     <div class="inner cover">
-                        <img src="@routes.Assets.at("images/franz.jpg")" alt="Batman" class="img-circle">
+                        <img src="@routes.Assets.versioned("images/franz.jpg")" alt="Batman" class="img-circle">
                         <h1 class="cover-heading">I like software development.</h1>
                         <p class="lead">I'm more of a backend guy. Distributed computing and functional programming is hard. Oh, and the devil is always in the details.</p>
 
@@ -62,7 +62,6 @@
                             <p>Cover template is without shame ripped from <a href="http://getbootstrap.com">Bootstrap</a>. Also, visit <a href="@link">this site.</a></p>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
