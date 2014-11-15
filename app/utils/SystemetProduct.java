@@ -25,6 +25,6 @@ public class SystemetProduct implements Product {
     }
 
     public String getName() {
-        return n.get("name").asText();
+        return n.get("name").asText() + " " + n.get("name_2").asText();
     }
 }
