@@ -18,7 +18,10 @@ public class SystemetProduct implements Product {
     }
 
     public String getUrl() {
-        return "<http://www.systembolaget.se/Sok-dryck/Dryck/?artikelId=" + n.get("article_id").asText() + "|" + this.getName() + ">";
+        String pn = n.get("product_number").asText();
+        return "<http://www.systembolaget.se/Sok-dryck/Dryck/?" +
+                "&varuNr=" + pn.substring(0, pn.length()-2)+
+                "|" + this.getName() + ">";
     }
 
     public String getName() {
