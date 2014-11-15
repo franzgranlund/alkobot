@@ -9,6 +9,9 @@ import play.libs.F;
 import play.libs.ws.WS;
 import play.mvc.Controller;
 import play.mvc.Result;
+import utils.AlkoProduct;
+import utils.Product;
+import utils.SystemetProduct;
 import views.html.index;
 
 import java.io.File;
@@ -43,7 +46,6 @@ public class Application extends Controller {
         String question = sr.text.toLowerCase().substring(8).trim();
         Logger.info("question:[{}] {}", sr.channel_name, question);
         if (question.startsWith("find ")) {
-            // http://www.alko.fi/api/find/products?Language=sv&Page=0&PageSize=20&ProductIds=&Query=lapin+kulta*&SingleGrape=false&Sort=0
             return WS.url("http://www.alko.fi/api/find/products")
                     .setQueryParameter("Language", "sv")
                     .setQueryParameter("Page", "0")
@@ -54,14 +56,23 @@ public class Application extends Controller {
                     .setQueryParameter("Sort", "0").get().<Result>map(r -> {
 
                         JsonNode alkoResult = r.asJson().findPath("Results");
-
-                        List<Product> products = new ArrayList<>();
-                        alkoResult.forEach(p -> products.add(new Product(p)));
-
-                        String slackResponse = (products.isEmpty()) ? "ehm.. wat?" : formatResponse(products);
-
+                        List<AlkoProduct> alkoProducts = new ArrayList<>();
+                        alkoResult.forEach(p -> alkoProducts.add(new AlkoProduct(p)));
+                        String slackResponse = (alkoProducts.isEmpty()) ? "ehm.. wat?" : formatResponse(alkoProducts, "e");
                         return ok(toJson(new SlackResponse(slackResponse)));
-            }).recover(t -> ok(toJson(new SlackResponse("my sources are drunk."))));
+                    }).recover(t -> ok(toJson(new SlackResponse("my sources are drunk."))));
+        } else if (question.startsWith("hitta ")) {
+            return WS.url("http://systemetapi.se/product")
+                    .setQueryParameter("name", question.substring(6))
+                    .get().<Result>map(r -> {
+
+                        JsonNode sbResult = r.asJson();
+                        List<SystemetProduct> products = new ArrayList<>();
+                        sbResult.forEach(p -> products.add(new SystemetProduct(p)));
+                        String slackResponse = (products.isEmpty()) ? "ehm.. wat?" : formatResponse(products, "kr");
+                        return ok(toJson(new SlackResponse(slackResponse)));
+                    }).recover(t -> ok(toJson(new SlackResponse("my sources are drunk."))));
+
         } else if (question.startsWith("nojsa lite")) {
             try {
                 String funnies = (Play.isDev()) ? Play.application().configuration().getString("dev.funnies") : Play.application().configuration().getString("prod.funnies");
@@ -77,24 +88,10 @@ public class Application extends Controller {
         }
     }
 
-    private static String formatResponse(List<Product> ps) {
+    private static String formatResponse(List<? extends Product> ps, String currency) {
         return ps.stream().map(p -> {
-            return p.price  + " e, " + p.volume + " liter - <http://www.alko.fi" + p.url + "|"+ p.name + ">\n";
+            return p.getPrice()  + " "+currency+", " + p.getVolume() + " liter - " + p.getUrl() + "\n";
         }).collect(Collectors.joining(""));
-    }
-
-    public static class Product {
-        public final String name;
-        public final String price;
-        public final String volume;
-        public final String url;
-
-        public Product(JsonNode n) {
-            price = n.get("Price").asText();
-            name = n.get("Name").asText();
-            volume = n.get("Volume").asText();
-            url = n.get("Url").asText();
-        }
     }
 
     public static class SlackResponse {
