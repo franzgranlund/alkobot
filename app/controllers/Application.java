@@ -27,18 +27,6 @@ import static play.libs.Json.toJson;
 public class Application extends Controller {
     private static Random rand = new Random();
 
-    public static Result index() {
-        Logger.info("[{}] GET /", request().remoteAddress());
-        List<String> urls = new ArrayList<>();
-        urls.add("http://www.playframework.com");
-        urls.add("http://www.scala-lang.org");
-        urls.add("http://http://akka.io");
-        urls.add("https://www.haskell.org/haskellwiki/Haskell");
-
-        response().setHeader(VARY, "Accept-Encoding");
-        return ok(index.render(urls.get(rand.nextInt(urls.size()))));
-    }
-
     public static F.Promise<Result> slackRequest() {
         Form<SlackRequest> req = Form.form(SlackRequest.class);
         SlackRequest sr = req.bindFromRequest().get();

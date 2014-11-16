@@ -3,7 +3,7 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET     /                           controllers.Webpage.index()
 POST    /alkobot/slack              controllers.Application.slackRequest()
 
 GET     /webjars/*file              controllers.WebJarAssets.at(file)
