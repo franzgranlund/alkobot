@@ -4,6 +4,7 @@
 
 # Home page
 GET     /                           controllers.Webpage.index()
+GET     /ip                         controllers.Webpage.ip()
 POST    /alkobot/slack              controllers.Application.slackRequest()
 
 GET     /webjars/*file              controllers.WebJarAssets.at(file)

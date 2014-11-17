@@ -1,5 +1,7 @@
 package controllers
 
+import java.net.{UnknownHostException, InetAddress}
+
 import play.api.mvc._
 import utils.LogAction
 
@@ -13,6 +15,17 @@ object Webpage extends Controller {
     Ok(views.html.index(happyUrl)).withHeaders(
       VARY -> "Accept-Encoding"
     )
+  }
+
+  def ip = LogAction { implicit request =>
+    val ipAddress = request.remoteAddress
+
+    try {
+      val hostName = InetAddress.getByName(ipAddress).getHostName
+      Ok(ipAddress + " -> " + hostName)
+    } catch {
+      case ue : UnknownHostException => Ok(ipAddress + " -> could not resolve.")
+    }
   }
 
   val urlList = List(
