@@ -12,7 +12,8 @@ scalaVersion := "2.11.4"
 libraryDependencies ++= Seq(
   javaWs,
   "org.webjars" %% "webjars-play" % "2.3.0-1",
-  "org.webjars" % "bootstrap" % "3.2.0"
+  "org.webjars" % "bootstrap" % "3.2.0",
+  "dnsjava" % "dnsjava" % "2.1.6"
 )
 
 pipelineStages := Seq(uglify, digest, gzip)

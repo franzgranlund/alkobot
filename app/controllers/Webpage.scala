@@ -2,6 +2,7 @@ package controllers
 
 import java.net.{UnknownHostException, InetAddress}
 
+import org.xbill.DNS.Address
 import play.api.mvc._
 import utils.LogAction
 
@@ -21,7 +22,7 @@ object Webpage extends Controller {
     val ipAddress = request.remoteAddress
 
     try {
-      val hostName = InetAddress.getByName(ipAddress).getHostName
+      val hostName = Address.getHostName(Address.getByAddress(ipAddress))
       Ok(ipAddress + " -> " + hostName)
     } catch {
       case ue : UnknownHostException => Ok(ipAddress + " -> could not resolve.")
