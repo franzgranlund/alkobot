@@ -12,14 +12,22 @@ import play.mvc.Result;
 import utils.AlkoProduct;
 import utils.Product;
 import utils.SystemetProduct;
+import utils.TimeToPizza;
 import views.html.index;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static play.libs.Json.toJson;
@@ -71,6 +79,17 @@ public class Application extends Controller {
                 Logger.error("Could not find funnies {}", e.getMessage());
                 return F.Promise.pure(ok(toJson(new SlackResponse("orkar inte."))));
             }
+        } else if (question.equals("pizza?")) {
+            TimeToPizza ttp = new TimeToPizza(TimeToPizza.nextFridayAtEleven);
+            SlackResponse r;
+            if (ttp.day >= 5) {
+                r = new SlackResponse("Jävligt länge alltså.. ("+ttp.day+":"+ttp.hour+":"+ttp.minute+":"+ttp.second+")");
+            } else if (ttp.day >= 2) {
+                r = new SlackResponse("Inga riktigt ännu.. ("+ttp.day+":"+ttp.hour+":"+ttp.minute+":"+ttp.second+")");
+            } else {
+                r = new SlackResponse("Snart så! Blir det Diablo? ("+ttp.day+":"+ttp.hour+":"+ttp.minute+":"+ttp.second+")");
+            }
+            return F.Promise.pure(ok(toJson(r)));
         } else {
             return F.Promise.pure(ok(toJson(new SlackResponse("waat?"))));
         }
