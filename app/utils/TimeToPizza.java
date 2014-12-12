@@ -29,5 +29,11 @@ public class TimeToPizza {
     }
 
     public static Supplier<LocalDateTime> nextFridayAtEleven =
-            () -> LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).atTime(11, 0);
+            () -> {
+                if (LocalDate.now().getDayOfWeek() == DayOfWeek.FRIDAY && LocalDateTime.now().getHour() < 11) {
+                    return LocalDate.now().atTime(11, 0);
+                }  else {
+                    return LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).atTime(11, 0);
+                }
+            };
 }
