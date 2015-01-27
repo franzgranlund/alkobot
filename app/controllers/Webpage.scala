@@ -6,7 +6,7 @@ import org.xbill.DNS.Address
 import play.api.mvc._
 import utils.LogAction
 
-import scala.util.Random
+import scala.util.{Failure, Success, Try, Random}
 
 object Webpage extends Controller {
 
@@ -19,15 +19,13 @@ object Webpage extends Controller {
   }
 
   def ip = LogAction { implicit request =>
-    val ipAddress = request.remoteAddress
-
-    try {
-      val hostName = Address.getHostName(Address.getByAddress(ipAddress))
-      Ok(ipAddress + " -> " + hostName)
-    } catch {
-      case ue : UnknownHostException => Ok(ipAddress + " -> could not resolve.")
+    resolveIp(request.remoteAddress) match {
+      case Success(host) => Ok(request.remoteAddress + " -> " + host)
+      case Failure(ex) => Ok(request.remoteAddress + " -> could not resolve.")
     }
   }
+
+  def resolveIp(ip: String): Try[String] = Try { Address.getHostName(Address.getByAddress(ip)) }
 
   val urlList = List(
     "http://www.playframework.com",
