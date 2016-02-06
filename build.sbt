@@ -13,7 +13,9 @@ libraryDependencies ++= Seq(
   javaWs,
   "org.webjars" %% "webjars-play" % "2.3.0-1",
   "org.webjars" % "bootstrap" % "3.2.0",
-  "dnsjava" % "dnsjava" % "2.1.6"
+  "dnsjava" % "dnsjava" % "2.1.6",
+  "com.googlecode.owasp-java-html-sanitizer" % "owasp-java-html-sanitizer" % "r239",
+  "org.jsoup" % "jsoup" % "1.8.3"
 )
 
 pipelineStages := Seq(uglify, digest, gzip)
@@ -30,3 +32,4 @@ mappings in Universal <+= (packageBin in Compile, baseDirectory ) map { (_, base
      val conf = base / "conf" / "application.conf"
      conf -> "conf/application.conf"
 } 
+
