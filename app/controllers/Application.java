@@ -1,7 +1,22 @@
 package controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.io.Files;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.owasp.html.HtmlPolicyBuilder;
+import org.owasp.html.PolicyFactory;
 import play.Logger;
 import play.Play;
 import play.data.Form;
@@ -13,22 +28,6 @@ import utils.AlkoProduct;
 import utils.Product;
 import utils.SystemetProduct;
 import utils.TimeToPizza;
-import views.html.index;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static play.libs.Json.toJson;
 
@@ -90,6 +89,24 @@ public class Application extends Controller {
                 r = new SlackResponse("Snart så! Blir det Diablo? ("+ttp.day+":"+ttp.hour+":"+ttp.minute+":"+ttp.second+")");
             }
             return F.Promise.pure(ok(toJson(r)));
+        } else if (question.equals("kesmo?")) {
+            DayOfWeek today =  LocalDateTime.now().getDayOfWeek();
+            if(today.getValue() <= 5 ) {
+                return WS.url("http://kesmo.fi").get().<Result>map(r -> {
+                    PolicyFactory policy
+                            = new HtmlPolicyBuilder()
+                            .allowElements("div", "p")
+                            .allowAttributes("class").onElements("div")
+                            .toFactory();
+                    Document kesmo = Jsoup.parse(policy.sanitize(r.getBody()));
+                    Elements week = kesmo.select("div.menuItem");
+                    Document todaysLunch = Jsoup.parse(week.get(today.getValue() - 1).toString());
+                    String slackResponse = todaysLunch.select("p").stream().map(p -> p.text()).collect(Collectors.joining("\n"));
+                    return ok(toJson(new SlackResponse(slackResponse)));
+                });
+            } else {
+                return F.Promise.pure(ok(toJson(new SlackResponse("Kesmo är stängt!"))));
+            }
         } else {
             return F.Promise.pure(ok(toJson(new SlackResponse("waat?"))));
         }
